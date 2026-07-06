@@ -19,6 +19,21 @@ alarm accessory for home automations.
 
 [homebridge]: https://homebridge.io
 
+## Limitations
+
+Syncing is **one-way**: HomeKit is the source of truth, and arming/disarming
+must be done through the Home app.
+
+"Arming" in the Protect app means enabling/disabling individual Alarm Manager
+alarms, and UniFi provides no way to observe that: the Integration API has no
+endpoint to read Alarm Manager state, and alarm actions only fire on detection
+triggers — there's no webhook for arm/disarm events. So if you toggle alarms
+directly in the Protect app, HomeKit won't know about it.
+
+(The internal API used by the Protect app itself could be polled for this, but
+it's unofficial and requires storing local admin credentials, so this project
+deliberately doesn't.)
+
 ## Configuration
 
 Everything is set via environment variables:
