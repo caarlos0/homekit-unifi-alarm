@@ -5,6 +5,7 @@ import (
 	"crypto/subtle"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"os"
 	"os/signal"
@@ -83,11 +84,11 @@ func main() {
 		}
 		if !alarm.Trigger() {
 			log.Info("ignoring trigger: alarm is disarmed", "addr", r.RemoteAddr)
-			_, _ = w.Write([]byte("ignored: alarm is disarmed\n"))
+			_, _ = io.WriteString(w, "ignored: alarm is disarmed\n")
 			return
 		}
 		log.Warn("alarm triggered", "addr", r.RemoteAddr)
-		_, _ = w.Write([]byte("triggered\n"))
+		_, _ = io.WriteString(w, "triggered\n")
 	})
 
 	server.ServeMux().HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
