@@ -3,3 +3,4 @@ db
 .envrc
 dist/
 homekit-unifi-alarm
+!cmd/homekit-unifi-alarm
