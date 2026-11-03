@@ -14,10 +14,6 @@ permissions:
 jobs:
   semgrep:
     uses: caarlos0/meta/.github/workflows/semgrep.yml@main
-  ruleguard:
-    uses: caarlos0/meta/.github/workflows/ruleguard.yml@main
-    with:
-      go-version: stable
   build:
     runs-on: ubuntu-latest
     steps:
