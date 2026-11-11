@@ -48,7 +48,7 @@ Everything is set via environment variables:
 | `WEBHOOK_METHOD`       | no       | `POST`  | HTTP method used to call the webhooks                   |
 | `WEBHOOK_TIMEOUT`      | no       | `10s`   | Timeout for webhook calls                               |
 | `INSECURE_SKIP_VERIFY` | no       | `false` | Skip TLS verification (UniFi self-signed certificates)  |
-| `TRIGGER_TOKEN`        | no       |         | If set, `/trigger` requires this token                  |
+| `TRIGGER_TOKEN`        | no       |         | Required to enable `/trigger`; otherwise disabled      |
 | `LISTEN`               | no       | `:9009` | Address to listen on                                    |
 
 Arm modes without a webhook configured are rejected in the Home app.
@@ -59,6 +59,9 @@ and require an API key: create one in UniFi under **Settings â†’ Control Plane â
 Integrations** and set it as `UNIFI_API_KEY`.
 
 ## Trigger endpoint
+
+The endpoint is disabled with HTTP 503 unless `TRIGGER_TOKEN` is configured.
+Set a deployment-specific token before configuring incoming webhooks.
 
 Point an Alarm Manager *Webhook* action at:
 
