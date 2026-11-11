@@ -2,10 +2,8 @@ package main
 
 import (
 	"context"
-	"crypto/subtle"
 	"encoding/json"
 	"errors"
-	"io"
 	"net/http"
 	"os"
 	"os/signal"
@@ -70,26 +68,7 @@ func main() {
 	}
 	server.Addr = cfg.Address
 
-	server.ServeMux().HandleFunc("/trigger", func(w http.ResponseWriter, r *http.Request) {
-		if cfg.TriggerToken != "" {
-			token := r.URL.Query().Get("token")
-			if h := r.Header.Get("Authorization"); strings.HasPrefix(h, "Bearer ") {
-				token = strings.TrimPrefix(h, "Bearer ")
-			}
-			if subtle.ConstantTimeCompare([]byte(token), []byte(cfg.TriggerToken)) != 1 {
-				log.Warn("trigger request with invalid token", "addr", r.RemoteAddr)
-				http.Error(w, "unauthorized", http.StatusUnauthorized)
-				return
-			}
-		}
-		if !alarm.Trigger() {
-			log.Info("ignoring trigger: alarm is disarmed", "addr", r.RemoteAddr)
-			_, _ = io.WriteString(w, "ignored: alarm is disarmed\n")
-			return
-		}
-		log.Warn("alarm triggered", "addr", r.RemoteAddr)
-		_, _ = io.WriteString(w, "triggered\n")
-	})
+	server.ServeMux().HandleFunc("/trigger", triggerHandler(alarm, cfg.TriggerToken))
 
 	server.ServeMux().HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
