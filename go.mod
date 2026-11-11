@@ -6,6 +6,7 @@ require (
 	github.com/brutella/hap v0.0.35
 	github.com/caarlos0/env/v11 v11.4.1
 	github.com/charmbracelet/log v1.0.0
+	github.com/tadglines/go-pkgs v0.0.0-20210623144937-b983b20f54f9
 )
 
 require (
@@ -24,7 +25,6 @@ require (
 	github.com/miekg/dns v1.1.61 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/tadglines/go-pkgs v0.0.0-20210623144937-b983b20f54f9 // indirect
 	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
 	github.com/vishvananda/netns v0.0.0-20200728191858-db3c7e526aae // indirect
 	github.com/xiam/to v0.0.0-20200126224905-d60d31e03561 // indirect
@@ -39,3 +39,5 @@ require (
 	golang.org/x/tools v0.45.0 // indirect
 	gopkg.in/Regis24GmbH/go-diacritics.v2 v2.0.3 // indirect
 )
+
+replace github.com/brutella/hap => ./third_party/hap
