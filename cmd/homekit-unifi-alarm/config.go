@@ -1,12 +1,15 @@
 package main
 
 import (
+	"errors"
 	"time"
 
+	"github.com/brutella/hap"
 	"github.com/brutella/hap/characteristic"
 )
 
 type Config struct {
+	HomeKitPIN      string `env:"HOMEKIT_PIN,notEmpty"`
 	DisarmWebhook   string `env:"DISARM_WEBHOOK,notEmpty"`
 	ArmStayWebhook  string `env:"ARM_STAY_WEBHOOK"`
 	ArmAwayWebhook  string `env:"ARM_AWAY_WEBHOOK"`
@@ -19,6 +22,21 @@ type Config struct {
 
 	TriggerToken string `env:"TRIGGER_TOKEN"`
 	Address      string `env:"LISTEN" envDefault:":9009"`
+}
+
+func validatePIN(pin string) error {
+	if len(pin) != 8 {
+		return errors.New("homekit pin must contain eight decimal digits")
+	}
+	for _, digit := range pin {
+		if digit < '0' || digit > '9' {
+			return errors.New("homekit pin must contain eight decimal digits")
+		}
+	}
+	if hap.InvalidPins[pin] || pin == "00102003" {
+		return errors.New("homekit pin must not be a known insecure or shared default pin")
+	}
+	return nil
 }
 
 // webhook returns the state name and the webhook URL for the given target

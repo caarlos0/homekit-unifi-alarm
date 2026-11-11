@@ -41,6 +41,7 @@ Everything is set via environment variables:
 | Variable               | Required | Default | Description                                             |
 | ---------------------- | -------- | ------- | ------------------------------------------------------- |
 | `DISARM_WEBHOOK`       | yes      |         | URL called when the alarm is disarmed                   |
+| `HOMEKIT_PIN`          | yes      |         | Deployment-specific eight-digit pairing PIN             |
 | `ARM_AWAY_WEBHOOK`     | no       |         | URL called when arming in away mode                     |
 | `ARM_STAY_WEBHOOK`     | no       |         | URL called when arming in stay/home mode                |
 | `ARM_NIGHT_WEBHOOK`    | no       |         | URL called when arming in night mode                    |
@@ -85,9 +86,12 @@ calls `DISARM_WEBHOOK`).
 ## Running
 
 ```console
-$ DISARM_WEBHOOK="https://..." ARM_AWAY_WEBHOOK="https://..." ./homekit-unifi-alarm
+$ HOMEKIT_PIN="$YOUR_PAIRING_PIN" DISARM_WEBHOOK="https://..." ARM_AWAY_WEBHOOK="https://..." ./homekit-unifi-alarm
 ```
 
-Then add the accessory to the Home app using the pin `001-02-003`.
+Set `HOMEKIT_PIN` to eight decimal digits without separators, and use that PIN
+when adding the accessory to the Home app. The shared library default and known
+insecure PINs are rejected. Keep this value private and configure it before
+upgrading an existing deployment; it is required on every startup.
 
 State (pairings and last alarm state) is kept in `./db`.
