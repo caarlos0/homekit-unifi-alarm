@@ -55,6 +55,10 @@ func main() {
 		)
 	}
 
+	if err := validatePIN(cfg.HomeKitPIN); err != nil {
+		log.Fatal("invalid configuration", "error", err)
+	}
+
 	fs := hap.NewFsStore("./db")
 
 	alarm := NewSecuritySystem(accessory.Info{
@@ -69,6 +73,7 @@ func main() {
 		log.Fatal("fail to create server", "error", err)
 	}
 	server.Addr = cfg.Address
+	server.Pin = cfg.HomeKitPIN
 
 	server.ServeMux().HandleFunc("/trigger", func(w http.ResponseWriter, r *http.Request) {
 		if cfg.TriggerToken != "" {
